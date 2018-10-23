@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+	<mapper namespace="com.java.mapper.memberMapper">
+		<select id="getTime" resultType="string">
+			SELECT now();
+		</select>
+		
+		<insert id="insertMember">
+			INSERT INTO tbl_member (userid, pw, name, email) VALUES (#{userid}, #{pw}, #{name}, #{email});
+		</insert>
+		
+		<select id="readMember" resultType="com.java.board.MemberVO">
+			SELECT
+			*
+			FROM
+			tbl_member
+			WHERE userid=#{userid};
+		</select>
+		
+		<select id="readWithPW" resultType="com.java.board.MemberVO">
+			SELECT
+			*
+			FROM
+			tbl_member
+			WHERE
+			userid=#{userid} AND pw=#{pw};
+		</select>
+	</mapper>	
+
