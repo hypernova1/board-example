@@ -16,12 +16,24 @@
 	</select>
 	
 	<update id="update">
-		UPDATE tbl_board SET title=#{title}, content=#{content} WHERE bno=#{bno};
+		UPDATE tbl_board SET title = #{title}, content = #{content} WHERE bno = #{bno};
 	</update>
 	
 	<delete id="delete">
 		DELETE FROM tbl_board WHERE bno=#{bno}
 	</delete>
+	
+	<select id="listPage" resultType="BoardVO">
+		<![CDATA[SELECT * FROM tbl_board WHERE bno > 0 ORDER BY bno, regdate DESC LIMIT #{page}, 10]]>
+	</select>
+	
+	<select id="listCriteria" resultType="BoardVO">
+		<![CDATA[SELECT * FROM tbl_board WHERE bno > 0 ORDER BY bno DESC, regdate DESC LIMIT #{pageStart}, #{perPageNum}]]>
+	</select>
+	
+	<select id="countPaging" resultType="int">
+		<![CDATA[SELECT count(bno) FROM tbl_board;]]>
+	</select>
 
 
 </mapper>

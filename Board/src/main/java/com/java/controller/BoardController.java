@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.java.domain.BoardVO;
+import com.java.domain.Criteria;
+import com.java.domain.PageMaker;
 import com.java.service.BoardService;
 
 @Controller
@@ -29,51 +31,65 @@ public class BoardController {
 	}
 	
 	@PostMapping("/register")
-	public String registerPost(BoardVO board, RedirectAttributes rttr) {
+	public String registerPost(BoardVO board, Criteria cri, RedirectAttributes rttr) {
 		logger.info("register Post...");
 		logger.info(board.toString());
 		
 		service.regist(board);
 		
 		rttr.addFlashAttribute("msg", "success");
+		rttr.addAttribute("page", cri.getPage());
+		rttr.addAttribute("perPageNum", cri.getPerPageNum());
 		
-		return "redirect:/board/listAll";
+		return "redirect:/board/listPage";
 	}
 	
-	@GetMapping("/listAll")
-	public void listAll(String msg, Model model) {
-		logger.info("show all list.....");
-		model.addAttribute("list", service.listAll());
-	}
-	
-	@GetMapping("/read")
-	public void read(int bno, Model model) {
+	@GetMapping("/readPage")
+	public void readPage(Integer bno, Criteria cri, Model model) {
 		model.addAttribute(service.read(bno));
+		model.addAttribute("cri", cri);
 	}
 	
-	@GetMapping("/remove")
-	public String remove(Integer bno, RedirectAttributes rttr) {
+	@GetMapping("/removePage")
+	public String remove(Integer bno, Criteria cri, RedirectAttributes rttr) {
 		service.remove(bno);
 		
 		rttr.addFlashAttribute("msg", "success");
+		rttr.addAttribute("page", cri.getPage());
+		rttr.addAttribute("perPageNum", cri.getPerPageNum());
 		
-		return "redirect:/board/listAll";
+		return "redirect:/board/listPage";
 		
 	}
 	
-	@GetMapping("/modify")
-	public void modifyGet(Integer bno, Model model) {
+	@GetMapping("/modifyPage")
+	public void modifyGet(Integer bno, Criteria cri, Model model) {
 		model.addAttribute(service.read(bno));
+		model.addAttribute("cri", cri);
 	}
 	
-	@PostMapping("/modify")
-	public String modifyPost(BoardVO vo, RedirectAttributes rttr) {
+	@PostMapping("/modifyPage")
+	public String modifyPost(BoardVO vo, Criteria cri, RedirectAttributes rttr) {
+		System.out.println("qdd:" + vo.getBno());
 		
 		logger.info("mod post.....");
 		
 		service.modify(vo);
 		rttr.addFlashAttribute("msg", "success");
+		rttr.addAttribute("page", cri.getPage());
+		rttr.addAttribute("perPageNum", cri.getPerPageNum());
 		
-		return "redirect:/board/listAll";
+		return "redirect:/board/listPage";
+	}
+	
+	@GetMapping("/listPage")
+	public void listCri(Criteria cri, Integer bno, Model model) {
+		
+		model.addAttribute("list", service.listCriteria(cri));
+		PageMaker pm = new PageMaker();
+		pm.setCri(cri);
+		pm.setTotalCount(service.listCountCriteria(cri));
+		
+		model.addAttribute("pageMaker", pm);
 	}
 }

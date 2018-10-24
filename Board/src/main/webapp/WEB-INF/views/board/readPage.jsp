@@ -6,14 +6,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-
 <body>
 <%@ include file="../include/header.jsp" %>
 	<div class="box-body">
-	<form role="form" method="post">
-		<input type="hidden" name="bno" value="${boardVO.bno}">
-	</form>
-	
 	<div class="form-group">
 		<label for="exampleInputEmail1">Title</label>
 		<input type="text" name="title" class="form-control" value="${boardVO.title}" readonly="readonly">
@@ -28,29 +23,37 @@
 	</div>
 	
 	<div class="box-footer">
-		<button type="submit" class="btn btn-warning">Modify</button>
-		<button type="submit" class="btn btn-danger">ROMOVE</button>
-		<button type="submit" class="btn btn-primary">LIST ALL</button>
+		<button type="submit" class="btn btn-warning modifyBtn">Modify</button>
+		<button type="submit" class="btn btn-danger removeBtn">ROMOVE</button>
+		<button type="submit" class="btn btn-primary goListBtn">GO LIST</button>
 	</div>
 	</div>
+	
+	<form role="form" action="modifyPage" method="post">
+		<input type="hidden" name="bno" value="${boardVO.bno}">
+		<input type="hidden" name="page" value="${cri.page}">
+		<input type="hidden" name="perPageNum" value="${cri.perPageNum}">
+	</form>
 
 <%@ include file="../include/footer.jsp" %>
 </body>
 <script>
 	let formObj = document.querySelector("form[role='form']");
 	
-	document.querySelector(".btn-warning").addEventListener('click', function(){
-		formObj.setAttribute("action", "/board/modify");
+	document.querySelector(".modifyBtn").addEventListener('click', function(){
+		formObj.setAttribute("action", "/board/modifyPage");
 		formObj.setAttribute("method", "get");
 		formObj.submit();
 	})
-	document.querySelector(".btn-danger").addEventListener('click', function(){
-		formObj.setAttribute("action", "/board/remove");
+	document.querySelector(".removeBtn").addEventListener('click', function(){
+		formObj.setAttribute("action", "/board/removePage");
 		formObj.setAttribute("method", "get");
 		formObj.submit();
 	})
-	document.querySelector(".btn-primary").addEventListener('click', function(){
-		self.location = "/board/listAll";
+	document.querySelector(".goListBtn").addEventListener('click', function(){
+		formObj.setAttribute("method", "get");
+		formObj.setAttribute("action", "/board/listPage");
+		formObj.submit();
 	})
 	
 </script>

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.java.domain.BoardVO;
+import com.java.domain.Criteria;
 import com.java.persistence.BoardDAO;
 
 @Service
@@ -26,6 +27,7 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public void modify(BoardVO vo) {
+		System.out.println(vo.getContent());
 		dao.update(vo);
 	}
 
@@ -37,6 +39,16 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<BoardVO> listAll() {
 		return dao.listAll();
+	}
+
+	@Override
+	public List<BoardVO> listCriteria(Criteria cri) {
+		return dao.listCriteria(cri);
+	}
+
+	@Override
+	public int listCountCriteria(Criteria cri) {
+		return dao.countPaging(cri);
 	}
 
 }
