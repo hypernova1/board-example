@@ -1,6 +1,6 @@
 package com.java.persistence;
 
-import com.java.board.MemberVO;
+import com.java.domain.MemberVO;
 
 public interface MemberDAO {
 
