@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.java.domain.BoardVO;
 import com.java.domain.Criteria;
+import com.java.domain.SearchCriteria;
 
 public interface BoardDAO {
 	
@@ -15,5 +16,7 @@ public interface BoardDAO {
 	public List<BoardVO> listPage(int page);
 	public List<BoardVO> listCriteria(Criteria cri);
 	public int countPaging(Criteria cri);
+	public List<BoardVO> listSearch(SearchCriteria cri);
+	public int listSearchCount(SearchCriteria cri);
 	
 }
